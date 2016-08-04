@@ -22,7 +22,3 @@ class CustomProcessorBase(object):
 
     def process(self, img):
         raise NotImplementedError
-
-
-def recreate_for_spec(clz):
-    return ProcessorMeta(clz.__name__, clz.__bases__, clz.__dict__.copy())

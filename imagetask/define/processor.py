@@ -26,7 +26,12 @@ class ProcessorChain(object):
         return copy
 
     def generate(self):
-        raise NotImplementedError
+        img = self.app.get_image(self.image_path)
+
+        for proc in self.processes:
+            img = proc.process(img)
+
+        return img
 
     @property
     def url(self):

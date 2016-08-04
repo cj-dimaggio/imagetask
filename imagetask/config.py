@@ -8,4 +8,4 @@ class Config(object):
             setattr(self, key, value)
 
     SECRET_KEY = None
-    BASE_URL = None
+    BASE_PATH = None

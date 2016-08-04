@@ -8,12 +8,15 @@ class ImageSpec(object):
         self.app = app
         data = self.app.serializer.loads(serial_data)
         self.image_path = data[0]
-        self.processes = self.app.new_processor_chain(self.image_path,
+        self.processor_chain = self.app.new_processor_chain(self.image_path,
                                                       self.expand_processes(
                                                           data[1]))
 
     def serialize(self):
         return self.serialize_spec(self.image_path, self.processes)
+
+    def generate(self):
+        return self.processor_chain.generate()
 
     @staticmethod
     def flatten_processes(processes=None):

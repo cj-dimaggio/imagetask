@@ -1,5 +1,11 @@
 from pilkit import processors
-from imagetask.processors.base import recreate_for_spec
+from imagetask.processors import ProcessorMeta
+
+
+def recreate_for_spec(clz, module=__name__):
+    dct = clz.__dict__.copy()
+    dct['__module__'] = module
+    return ProcessorMeta(clz.__name__, (clz,), dct)
 
 
 Adjust = recreate_for_spec(processors.base.Adjust)
