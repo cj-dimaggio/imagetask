@@ -1,6 +1,5 @@
-from importlib import import_module
-
 from imagetask.processors import ProcessorMeta
+from imagetask.util import import_class
 
 
 class ImageSpec(object):
@@ -35,9 +34,7 @@ class ImageSpec(object):
         processes = processes or list()
         resp = list()
         for proc in processes:
-            module, clz = proc[0].rsplit('.', 1)
-            module = import_module(module)
-            clz = getattr(module, clz)
+            clz = import_class(proc[0])
             resp.append(clz(*proc[1], **proc[2]))
         return resp
 

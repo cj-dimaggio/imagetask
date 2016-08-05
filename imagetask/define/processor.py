@@ -1,3 +1,4 @@
+from PIL import Image
 from collections import deque
 from spec import ImageSpec
 from imagetask.processors import ProcessorMeta
@@ -26,11 +27,14 @@ class ProcessorChain(object):
         return copy
 
     def generate(self):
-        img = self.app.get_image(self.image_path)
+        img = Image.open(self.app.storage.get(self.image_path))
+        original_format = img.format
 
         for proc in self.processes:
             img = proc.process(img)
 
+        img.format = original_format
+        self.app.storage.save(self.image_path, self.url, img)
         return img
 
     @property

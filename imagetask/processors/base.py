@@ -17,7 +17,7 @@ class ProcessorMeta(type):
         return super(ProcessorMeta, mcs).__new__(mcs, name, parents, dct)
 
 
-class CustomProcessorBase(object):
+class ProcessorBase(object):
     __metaclass__ = ProcessorMeta
 
     def process(self, img):
