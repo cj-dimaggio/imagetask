@@ -1,13 +1,9 @@
-from imagetask.config import ConfigDef
-
-
 class BaseStorage(object):
-    CONFIG = ConfigDef()
 
     def exists(self, path):
         raise NotImplementedError
 
-    def get(self, path):
+    def get(self, path, mode='rb'):
         raise NotImplementedError
 
     def save(self, path, img, save_options):

@@ -9,11 +9,11 @@ def app():
     config = {
         'SECRET_KEY': 'SECRET',
         'LOADER': {
-            'CLASS': 'imagetask.loaders.file.FileLoader',
+            'CLASS': 'imagetask.handlers.loaders.file.FileLoader',
             'BASE_PATH': 'tests/media'
         },
         'STORAGE': {
-            'CLASS': 'imagetask.storages.file.FileStorage',
+            'CLASS': 'imagetask.handlers.storages.file.FileStorage',
             'BASE_PATH': 'tests/working'
         }
     }

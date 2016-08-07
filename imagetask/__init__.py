@@ -1,2 +1,2 @@
 from imagetask import ImageTaskApp
-from handlers.spec import ImageSpec
+from image.spec import ImageSpec

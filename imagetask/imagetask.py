@@ -1,6 +1,6 @@
 from itsdangerous import URLSafeSerializer
 
-from .handlers.spec import ImageSpec
+from .image.spec import ImageSpec
 from .config import ConfigDef
 
 
@@ -8,10 +8,10 @@ class ImageTaskApp(object):
     config = ConfigDef(dict(
         SECRET_KEY=ConfigDef.RequiredField,
         LOADER={
-            'CLASS': 'imagetask.loaders.file.FileLoader'
+            'CLASS': 'imagetask.handlers.loaders.file.FileLoader'
         },
         STORAGE={
-            'CLASS': 'imagetask.storages.no_store.NoStoreStorage',
+            'CLASS': 'imagetask.handlers.storages.no_store.NoStoreStorage',
             'BASE_PATH': '/tmp/'
         }
     ))

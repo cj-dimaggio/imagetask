@@ -8,19 +8,19 @@ def basic_app():
     basic_config = {
         'SECRET_KEY': 'SECRET',
         'LOADER': {
-            'CLASS': 'imagetask.loaders.file.FileLoader',
+            'CLASS': 'imagetask.handlers.loaders.file.FileLoader',
             'BASE_PATH': 'tests/media'
         },
         'STORAGE': {
-            'CLASS': 'imagetask.storages.no_store.NoStoreStorage',
+            'CLASS': 'imagetask.handlers.storages.no_store.NoStoreStorage',
         }
     }
     yield ImageTaskApp(basic_config)
 
 
 def test_basic_app(basic_app):
-    from imagetask.loaders.file import FileLoader
-    from imagetask.storages.no_store import NoStoreStorage
+    from imagetask.handlers.loaders.file import FileLoader
+    from imagetask.handlers.storages.no_store import NoStoreStorage
 
     assert basic_app.config.SECRET_KEY == 'SECRET'
     assert isinstance(basic_app.loader, FileLoader)

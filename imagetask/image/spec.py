@@ -23,8 +23,9 @@ class ImageSpec(object):
         ))
 
     def generate(self):
-        if self.app.storage.exists(self.url):
-            return self.app.storage.get(self.url)
+        key = self.url
+        if self.app.storage.exists(key):
+            return self.app.storage.get(key)
         else:
             img = Image.open(self.app.loader.get(self.image_path))
 
@@ -39,7 +40,7 @@ class ImageSpec(object):
             save_options = self.save_options.copy()
             save_options.pop('format', None)
             save_options.pop('maintain_alpha', None)
-            self.app.storage.save(self.url, img, save_options)
+            self.app.storage.save(key, img, save_options)
             return img
 
     def determine_save_format(self, img):
