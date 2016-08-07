@@ -5,12 +5,12 @@ config = {
     'BASE_PATH': '/Users/cjdimaggio/Downloads',
     'SECRET_KEY': 'SECRET',
     'LOADER': {
-        'CLASS': '',
-        'BASE_PATH': ''
+        'CLASS': 'imagetask.loaders.file.FileLoader',
+        'BASE_PATH': '/Users/cjdimaggio/Downloads'
     },
     'STORAGE': {
         'CLASS': 'imagetask.storages.file.FileStorage',
-        'BASE_PATH': '/Users/cjdimaggio/Downloads'
+        'BASE_PATH': '/tmp/'
     }
 }
 

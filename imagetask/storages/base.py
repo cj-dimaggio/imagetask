@@ -10,5 +10,5 @@ class BaseStorage(object):
     def get(self, path):
         raise NotImplementedError
 
-    def save(self, path, img):
+    def save(self, path, img, save_options):
         raise NotImplementedError

@@ -6,10 +6,10 @@ from collections import deque
 
 
 class ImageSpec(object):
-    def __init__(self, app, image_path, processors=None, options=None):
+    def __init__(self, app, image_path, processors=None, save_options=None):
         self.app = app
         self.image_path = image_path
-        self.options = options
+        self.save_options = save_options or dict()
 
         if isinstance(processors, list):
             processors = deque(processors)
@@ -17,25 +17,44 @@ class ImageSpec(object):
 
     def serialize(self):
         return self.app.serializer.dumps((
-                self.image_path,
-                self.flatten_processes(self.processors),
-                self.options
+            self.image_path,
+            self.flatten_processes(self.processors),
+            self.save_options
         ))
 
     def generate(self):
-        img = Image.open(self.app.storage.get(self.image_path))
-        original_format = img.format
+        img = Image.open(self.app.loader.get(self.image_path))
+
+        # Processors will probably convert image to raw rgb
+        img_format = self.determine_save_format(img)
 
         for proc in self.processors:
             img = proc.process(img)
 
-        img.format = original_format
-        self.app.storage.save(self.image_path, self.url, img)
+        img.format = img_format
+        save_name = self.app.namer.name(self.image_path, self.url, img)
+
+        save_options = self.save_options.copy()
+        save_options.pop('format', None)
+        save_options.pop('maintain_alpha', None)
+        self.app.storage.save(save_name, img, save_options)
         return img
+
+    def determine_save_format(self, img):
+        if self.save_options.get('format'):
+            if self.save_options.get('maintain_alpha',
+                                     False) and img.mode == 'RGBA':
+                alpha = img.split()[-1]
+                all_pixel = alpha.width * alpha.height
+                if alpha.histogram()[255] != all_pixel:
+                    return img.format
+            else:
+                return self.save_options.get('format')
+        return img.format
 
     def copy(self):
         return ImageSpec(self.app, self.image_path, processors=self.processors,
-                         options=self.options)
+                         save_options=self.save_options)
 
     def append_processor_copy(self, processor):
         copy = self.copy()
@@ -56,8 +75,9 @@ class ImageSpec(object):
         data = app.serializer.loads(serial_data)
         image_path = data[0]
         processors = cls.expand_processes(data[1])
-        options = data[2]
-        return cls(app, image_path, processors=processors, options=options)
+        save_options = data[2]
+        return cls(app, image_path, processors=processors,
+                   save_options=save_options)
 
     @staticmethod
     def flatten_processes(processes=None):
