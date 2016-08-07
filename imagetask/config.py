@@ -10,6 +10,10 @@ class ConfigDef(object):
         self.update(config)
         self.location = location or list()
 
+    def copy(self):
+        import copy
+        return copy.deepcopy(self)
+
     def update(self, config):
         self.config.update(config)
         for key, value in config.iteritems():

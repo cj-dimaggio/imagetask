@@ -44,6 +44,7 @@ def test_lookup(app):
     deriv.generate()
 
     app.storage.exists = wrapper(app.storage.exists)
+    app.lookup.lookup = dict()
 
     deriv.generate()
     assert triggered[0]

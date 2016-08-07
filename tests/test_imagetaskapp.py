@@ -12,7 +12,7 @@ def basic_app():
             'BASE_PATH': 'tests/media'
         },
         'STORAGE': {
-            'CLASS': 'imagetask.handlers.storages.no_store.NoStoreStorage',
+            'CLASS': 'imagetask.handlers.storages.base.NoStorage',
         }
     }
     yield ImageTaskApp(basic_config)
@@ -20,11 +20,11 @@ def basic_app():
 
 def test_basic_app(basic_app):
     from imagetask.handlers.loaders.file import FileLoader
-    from imagetask.handlers.storages.no_store import NoStoreStorage
+    from imagetask.handlers.storages.base import NoStorage
 
     assert basic_app.config.SECRET_KEY == 'SECRET'
     assert isinstance(basic_app.loader, FileLoader)
-    assert isinstance(basic_app.storage, NoStoreStorage)
+    assert isinstance(basic_app.storage, NoStorage)
 
 
 def test_deriv(basic_app):

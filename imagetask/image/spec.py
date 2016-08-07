@@ -24,24 +24,29 @@ class ImageSpec(object):
 
     def generate(self):
         key = self.url
-        if self.app.storage.exists(key):
-            return self.app.storage.get(key)
-        else:
-            img = Image.open(self.app.loader.get(self.image_path))
 
-            # Processors will probably convert image to raw rgb
-            img_format = self.determine_save_format(img)
+        if not self.app.lookup.exists(key):
+            if not self.app.storage.exists(key):
+                img = Image.open(self.app.loader.get(self.image_path))
 
-            for proc in self.processors:
-                img = proc.process(img)
+                # Processors will probably convert image to raw rgb
+                img_format = self.determine_save_format(img)
 
-            img.format = img_format
+                for proc in self.processors:
+                    img = proc.process(img)
 
-            save_options = self.save_options.copy()
-            save_options.pop('format', None)
-            save_options.pop('maintain_alpha', None)
-            self.app.storage.save(key, img, save_options)
-            return img
+                img.format = img_format
+
+                save_options = self.save_options.copy()
+                save_options.pop('format', None)
+                save_options.pop('maintain_alpha', None)
+                self.app.storage.save(key, img, save_options)
+                self.app.lookup.add(key)
+                return img
+            else:
+                # We had a cache miss (for some reason) and want to add it
+                self.app.lookup.add(key)
+        return self.app.storage.get(key)
 
     def determine_save_format(self, img):
         if self.save_options.get('format'):

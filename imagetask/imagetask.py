@@ -11,18 +11,23 @@ class ImageTaskApp(object):
             'CLASS': 'imagetask.handlers.loaders.file.FileLoader'
         },
         STORAGE={
-            'CLASS': 'imagetask.handlers.storages.no_store.NoStoreStorage',
+            'CLASS': 'imagetask.handlers.storages.base.NoStorage',
             'BASE_PATH': '/tmp/'
+        },
+        LOOKUP={
+            'CLASS': 'imagetask.handlers.lookups.memory.MemoryLookup'
         }
     ))
 
     def __init__(self, config):
+        self.config = self.config.copy()
         self.config.update(config)
         self.config.validate()
         self.serializer = URLSafeSerializer(self.config.SECRET_KEY)
 
         self.loader = self.config.create_configured_instance('LOADER')
         self.storage = self.config.create_configured_instance('STORAGE')
+        self.lookup = self.config.create_configured_instance('LOOKUP')
 
     def derivative(self, image_path, processors=None, save_options=None):
         return ImageSpec(self, image_path, processors=processors,

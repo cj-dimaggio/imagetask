@@ -1,9 +1,10 @@
 import os
 
 from imagetask.config import ConfigDef
+from .base import IOBase
 
 
-class FileIO(object):
+class FileIO(IOBase):
     config = ConfigDef(dict(
         BASE_PATH=ConfigDef.RequiredField
     ))
