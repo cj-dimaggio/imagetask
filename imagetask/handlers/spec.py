@@ -23,27 +23,29 @@ class ImageSpec(object):
         ))
 
     def generate(self):
-        img = Image.open(self.app.loader.get(self.image_path))
+        if self.app.storage.exists(self.url):
+            return self.app.storage.get(self.url)
+        else:
+            img = Image.open(self.app.loader.get(self.image_path))
 
-        # Processors will probably convert image to raw rgb
-        img_format = self.determine_save_format(img)
+            # Processors will probably convert image to raw rgb
+            img_format = self.determine_save_format(img)
 
-        for proc in self.processors:
-            img = proc.process(img)
+            for proc in self.processors:
+                img = proc.process(img)
 
-        img.format = img_format
-        save_name = self.app.namer.name(self.image_path, self.url, img)
+            img.format = img_format
 
-        save_options = self.save_options.copy()
-        save_options.pop('format', None)
-        save_options.pop('maintain_alpha', None)
-        self.app.storage.save(save_name, img, save_options)
-        return img
+            save_options = self.save_options.copy()
+            save_options.pop('format', None)
+            save_options.pop('maintain_alpha', None)
+            self.app.storage.save(self.url, img, save_options)
+            return img
 
     def determine_save_format(self, img):
         if self.save_options.get('format'):
             if self.save_options.get('maintain_alpha',
-                                     False) and img.mode == 'RGBA':
+                                     False) and img.mode in ['RGBA', 'L']:
                 alpha = img.split()[-1]
                 all_pixel = alpha.width * alpha.height
                 if alpha.histogram()[255] != all_pixel:
