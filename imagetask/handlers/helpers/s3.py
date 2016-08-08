@@ -3,10 +3,9 @@ import os
 from cStringIO import StringIO
 
 from imagetask.config import ConfigDef
-from .base import IOBase
 
 
-class S3IO(IOBase):
+class S3IO(object):
     config = ConfigDef({
         'KEY': ConfigDef.RequiredField,
         'SECRET': ConfigDef.RequiredField,

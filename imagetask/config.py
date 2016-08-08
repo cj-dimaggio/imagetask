@@ -44,6 +44,7 @@ class ConfigDef(object):
 
         if hasattr(instance, 'config') and isinstance(instance.config,
                                                       ConfigDef):
+            instance.config = instance.config.copy()
             instance.config.update(config)
             instance.config.location.append(key.upper())
             instance.config.validate()
