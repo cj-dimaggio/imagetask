@@ -64,6 +64,9 @@ class ImageSpec(object):
         return ImageSpec(self.app, self.image_path, processors=self.processors,
                          save_options=self.save_options)
 
+    def new_processor(self, processor):
+        return self.append_processor_copy(processor)
+
     def append_processor_copy(self, processor):
         copy = self.copy()
         copy.processors.append(processor)
@@ -73,6 +76,25 @@ class ImageSpec(object):
         copy = self.copy()
         copy.processors.appendleft(processor)
         return copy
+
+    def crop(self, width=None, height=None, x=None, y=None):
+        from imagetask.processors import Crop
+        return self.new_processor(
+            Crop(width=width, height=height, x=x, y=y))
+
+    def resize(self, width=None, height=None):
+        from imagetask.processors import ScaleToFit
+        return self.new_processor(ScaleToFit(width, height))
+
+    def resize_to_cover(self, width, height):
+        from imagetask.processors import ResizeToCover
+        return self.new_processor(ResizeToCover(width, height))
+
+    def max_dimensions(self, width=None, height=None, upscale=False,
+                       mat_color=None):
+        from imagetask.processors import ResizeToFit
+        return self.new_processor(
+            ResizeToFit(width, height, upscale, mat_color))
 
     @property
     def url(self):
