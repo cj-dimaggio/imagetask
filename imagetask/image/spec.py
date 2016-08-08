@@ -25,8 +25,20 @@ class ImageSpec(object):
     def generate(self):
         key = self.url
 
-        if not self.app.lookup.exists(key):
-            if not self.app.storage.exists(key):
+        resp = None
+
+        if self.app.lookup.exists(key):
+            resp = self.app.storage.get(key)
+            if not resp:
+                # The cache gave a bad response, so unset the key
+                self.app.lookup.delete(key)
+
+        if not resp:
+            if self.app.storage.exists(key):
+                # We had a cache miss (for some reason) and will want
+                # to add it later
+                resp = self.app.storage.get(key)
+            else:
                 img = Image.open(self.app.loader.get(self.image_path))
 
                 # Processors will probably convert image to raw rgb
@@ -40,13 +52,14 @@ class ImageSpec(object):
                 save_options = self.save_options.copy()
                 save_options.pop('format', None)
                 save_options.pop('maintain_alpha', None)
-                f = self.app.storage.save(key, img, save_options)
-                self.app.lookup.add(key)
-                return f
-            else:
-                # We had a cache miss (for some reason) and want to add it
-                self.app.lookup.add(key)
-        return self.app.storage.get(key)
+                resp = self.app.storage.save(key, img, save_options)
+
+            self.app.lookup.add(key)
+
+        if resp:
+            resp.seek(0)
+
+        return resp
 
     def determine_save_format(self, img):
         if self.save_options.get('format'):

@@ -11,3 +11,6 @@ class MemoryLookup(BaseLookup):
 
     def add(self, key, value=True):
         self.lookup[key] = value
+
+    def delete(self, key):
+        del self.lookup[key]

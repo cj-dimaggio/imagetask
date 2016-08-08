@@ -6,6 +6,9 @@ class BaseLookup(object):
     def add(self, key, value=True):
         raise NotImplementedError
 
+    def delete(self, key):
+        raise NotImplementedError
+
 
 class NoLookup(BaseLookup):
 
@@ -13,4 +16,7 @@ class NoLookup(BaseLookup):
         return False
 
     def add(self, key, value=True):
+        pass
+
+    def delete(self, key):
         pass
