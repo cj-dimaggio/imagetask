@@ -1,0 +1,7 @@
+SECRET_KEY: secret
+LOADER:
+    CLASS: imagetask.handlers.loaders.file.FileLoader
+    BASE_PATH: tests/media
+STORAGE:
+    CLASS: imagetask.handlers.storages.file.FileStorage
+    BASE_PATH: tests/working

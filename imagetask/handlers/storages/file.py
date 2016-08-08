@@ -12,3 +12,4 @@ class FileStorage(FileIO, BaseStorage):
             os.makedirs(save_dir)
 
         img.save(save_path, format=img.format, **save_options)
+        return self.get(path)

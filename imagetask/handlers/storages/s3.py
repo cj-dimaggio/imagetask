@@ -13,3 +13,5 @@ class S3Storage(S3IO, BaseStorage):
         f = StringIO()
         img.save(f, format=img.format, **save_options)
         key.set_contents_from_file(f)
+        f.seek(0)
+        return f

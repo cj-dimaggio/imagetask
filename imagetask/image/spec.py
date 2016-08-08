@@ -40,9 +40,9 @@ class ImageSpec(object):
                 save_options = self.save_options.copy()
                 save_options.pop('format', None)
                 save_options.pop('maintain_alpha', None)
-                self.app.storage.save(key, img, save_options)
+                f = self.app.storage.save(key, img, save_options)
                 self.app.lookup.add(key)
-                return img
+                return f
             else:
                 # We had a cache miss (for some reason) and want to add it
                 self.app.lookup.add(key)

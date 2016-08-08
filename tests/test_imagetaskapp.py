@@ -1,5 +1,6 @@
 import pytest
 
+from PIL import Image
 from imagetask import ImageTaskApp
 
 
@@ -31,7 +32,7 @@ def test_deriv(basic_app):
     from imagetask.processors.lib import Crop
     deriv = basic_app.derivative('test_image.png')
     deriv += Crop(width=50, height=200, x=20, y=10)
-    img = deriv.generate()
+    img = Image.open(deriv.generate())
     assert img.width == 50
     assert img.height == 200
 
@@ -47,29 +48,29 @@ def test_serialization(basic_app):
 
 def test_format(basic_app):
     deriv = basic_app.derivative('test_image.png')
-    assert deriv.generate().format == 'PNG'
+    assert Image.open(deriv.generate()).format == 'PNG'
 
     deriv = basic_app.derivative('test_image.png', save_options={
         'format': 'JPEG',
         'quality':  20
     })
-    assert deriv.generate().format == 'JPEG'
+    assert Image.open(deriv.generate()).format == 'JPEG'
 
 
 def test_alpha(basic_app):
     deriv = basic_app.derivative('test_alpha.png', save_options={
         'format': 'JPEG',
     })
-    assert deriv.generate().format == 'JPEG'
+    assert Image.open(deriv.generate()).format == 'JPEG'
 
     deriv = basic_app.derivative('test_alpha.png', save_options={
         'format': 'JPEG',
         'maintain_alpha': True
     })
-    assert deriv.generate().format == 'PNG'
+    assert Image.open(deriv.generate()).format == 'PNG'
 
     deriv = basic_app.derivative('test_image.png', save_options={
         'format': 'JPEG',
         'maintain_alpha': True
     })
-    assert deriv.generate().format == 'JPEG'
+    assert Image.open(deriv.generate()).format == 'JPEG'
