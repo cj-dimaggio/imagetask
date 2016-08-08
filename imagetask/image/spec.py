@@ -1,3 +1,5 @@
+import os
+
 from PIL import Image
 
 from imagetask.processors import ProcessorMeta
@@ -23,7 +25,7 @@ class ImageSpec(object):
         ))
 
     def generate(self):
-        key = self.url
+        key = self.key
 
         resp = None
 
@@ -110,8 +112,12 @@ class ImageSpec(object):
             ResizeToFit(width, height, upscale, mat_color))
 
     @property
-    def url(self):
+    def key(self):
         return self.serialize()
+
+    @property
+    def url(self):
+        return os.path.join(self.app.config.URL_PREFIX, self.key)
 
     @classmethod
     def create_from_serial_data(cls, app, serial_data):

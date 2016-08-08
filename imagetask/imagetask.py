@@ -7,6 +7,7 @@ from .config import ConfigDef
 class ImageTaskApp(object):
     config = ConfigDef(dict(
         SECRET_KEY=ConfigDef.RequiredField,
+        URL_PREFIX='',
         LOADER={
             'CLASS': 'imagetask.handlers.loaders.file.FileLoader'
         },
