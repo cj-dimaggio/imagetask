@@ -1,1 +1,1 @@
-from spec import ImageSpec
+from .spec import ImageSpec

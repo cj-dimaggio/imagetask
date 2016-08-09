@@ -16,13 +16,13 @@ class ConfigDef(object):
 
     def update(self, config):
         self.config.update(config)
-        for key, value in config.iteritems():
+        for key, value in config.items():
             key = key.upper()
             setattr(self, key, value)
             self.config[key] = value
 
     def validate(self):
-        for key, value in self.config.iteritems():
+        for key, value in self.config.items():
             if value == ConfigDef.RequiredField:
                 raise Exception(
                     'Required field: "%s" not entered:' % (

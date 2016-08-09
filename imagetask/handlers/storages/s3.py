@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from io import StringIO
 
 from ..helpers.s3 import S3IO
 from .base import BaseStorage

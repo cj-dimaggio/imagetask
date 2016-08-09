@@ -19,7 +19,7 @@ def test_server():
     url = deriv.url
 
     with flask_app.test_client() as c:
-        from cStringIO import StringIO
+        from io import StringIO
         resp = c.get(url)
         f = StringIO(resp.data)
         f.seek(0)

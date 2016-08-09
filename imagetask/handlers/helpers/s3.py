@@ -1,6 +1,6 @@
 import os
 
-from cStringIO import StringIO
+from io import StringIO
 
 from imagetask.config import ConfigDef
 

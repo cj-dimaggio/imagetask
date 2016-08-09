@@ -1,2 +1,2 @@
-from imagetask import ImageTaskApp
-from image.spec import ImageSpec
+from .imagetask import ImageTaskApp
+from .image.spec import ImageSpec
