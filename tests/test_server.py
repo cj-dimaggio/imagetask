@@ -19,9 +19,9 @@ def test_server():
     url = deriv.url
 
     with flask_app.test_client() as c:
-        from io import StringIO
+        from io import BytesIO
         resp = c.get(url)
-        f = StringIO(resp.data)
+        f = BytesIO(resp.data)
         f.seek(0)
         assert resp.content_type == 'image/png'
         img = Image.open(f)

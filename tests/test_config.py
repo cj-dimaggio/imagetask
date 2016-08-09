@@ -8,7 +8,7 @@ def test_required():
     try:
         config.validate()
     except Exception as e:
-        assert e.message == 'Required field: "REQUIRED" not entered:'
+        assert str(e) == 'Required field: "REQUIRED" not entered:'
 
 
 def test_update():

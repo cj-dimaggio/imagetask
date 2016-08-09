@@ -19,8 +19,8 @@ class NoStorage(BaseStorage):
         return None
 
     def save(self, path, img, save_options):
-        from io import StringIO
-        f = StringIO()
+        from io import BytesIO
+        f = BytesIO()
         img.save(f, format=img.format, **save_options)
         f.seek(0)
         return f

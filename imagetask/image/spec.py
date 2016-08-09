@@ -1,4 +1,5 @@
 import os
+from six import string_types
 
 from PIL import Image
 
@@ -150,7 +151,7 @@ class ImageSpec(object):
         return resp
 
     def __add__(self, other):
-        if isinstance(other, basestring):
+        if isinstance(other, string_types):
             return self.url + other
         elif isinstance(other.__class__, ProcessorMeta):
             return self.append_processor_copy(other)

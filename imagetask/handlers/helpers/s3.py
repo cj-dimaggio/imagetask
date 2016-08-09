@@ -1,6 +1,6 @@
 import os
 
-from io import StringIO
+from io import BytesIO
 
 from imagetask.config import ConfigDef
 
@@ -24,7 +24,7 @@ class S3IO(object):
     def get(self, path, mode='rb'):
         name = self.get_name(path)
         key = self.bucket.get_key(name)
-        f = StringIO()
+        f = BytesIO()
         key.get_contents_to_file(f)
         f.seek(0)
         return f
