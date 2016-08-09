@@ -7,6 +7,7 @@ from imagetask import ImageTaskApp
 def register_imagetask(app, config, route_prefix='',
                        get_endpoint='imagetask_get'):
     imagetask = ImageTaskApp(config)
+    app.imagetask = imagetask
 
     @app.route('%s/<data>' % route_prefix, methods=('GET',),
                endpoint=get_endpoint)
