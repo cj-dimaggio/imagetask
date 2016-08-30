@@ -4,7 +4,7 @@ from imagetask.config import ConfigDef
 from imagetask.handlers.lookups.base import WerkzeugWrapper
 
 
-class FileLookup(WerkzeugWrapper):
+class RedisLookup(WerkzeugWrapper):
     config = ConfigDef(dict(
         HOST='localhost',
         PORT=6379,

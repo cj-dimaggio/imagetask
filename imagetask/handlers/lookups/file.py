@@ -18,3 +18,8 @@ class FileLookup(WerkzeugWrapper):
                                      threshold=self.config['THRESHOLD'],
                                      mode=self.config['MODE'],
                                      default_timeout=0)
+
+    def add(self, key, value=True):
+        # Default timeout doesn't work for previous versions of werkzeug
+        timeout = 0
+        self.cache.set(key, value, timeout=timeout)
