@@ -39,7 +39,7 @@ class ConfigDef(object):
         return import_class(config.pop('CLASS')), config
 
     def create_configured_instance(self, key, *args, **kwargs):
-        clz, config = self.load_class(key)
+        clz, config = self.copy().load_class(key)
         instance = clz(*args, config=config, **kwargs)
 
         return instance
