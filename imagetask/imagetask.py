@@ -1,7 +1,6 @@
 from itsdangerous import URLSafeSerializer
 
-from imagetask.util import import_class
-from .image.spec import ImageSpec
+from .util import import_class
 from .config import ConfigDef
 
 
