@@ -9,7 +9,7 @@ class BaseStorage(Configurable):
     def get(self, path, mode='rb'):
         raise NotImplementedError
 
-    def save(self, path, img, save_options):
+    def save(self, path, f):
         raise NotImplementedError
 
 
@@ -21,9 +21,5 @@ class NoStorage(BaseStorage):
     def get(self, path, mode='rb'):
         return None
 
-    def save(self, path, img, save_options):
-        from io import BytesIO
-        f = BytesIO()
-        img.save(f, format=img.format, **save_options)
-        f.seek(0)
+    def save(self, path, f):
         return f

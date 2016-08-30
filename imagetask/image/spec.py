@@ -1,5 +1,5 @@
 import os
-from six import string_types
+from six import string_types, BytesIO
 
 from PIL import Image
 
@@ -25,6 +25,27 @@ class ImageSpec(object):
             self.save_options
         ))
 
+    def _generate_image(self):
+        img = Image.open(self.app.loader.get(self.image_path))
+
+        # Processors will probably convert image to raw rgb
+        img_format = self.determine_save_format(img)
+
+        for proc in self.processors:
+            img = proc.process(img)
+
+        img.format = img_format
+
+        save_options = self.save_options.copy()
+        save_options.pop('format', None)
+        save_options.pop('maintain_alpha', None)
+        f = BytesIO()
+        img.save(f, format=img.format, **save_options)
+        f.seek(0)
+        self.app.storage.save(self.key, f)
+        f.seek(0)
+        return f
+
     def generate(self):
         key = self.key
 
@@ -42,21 +63,7 @@ class ImageSpec(object):
                 # to add it later
                 resp = self.app.storage.get(key)
             else:
-                img = Image.open(self.app.loader.get(self.image_path))
-
-                # Processors will probably convert image to raw rgb
-                img_format = self.determine_save_format(img)
-
-                for proc in self.processors:
-                    img = proc.process(img)
-
-                img.format = img_format
-
-                save_options = self.save_options.copy()
-                save_options.pop('format', None)
-                save_options.pop('maintain_alpha', None)
-                resp = self.app.storage.save(key, img, save_options)
-
+                resp = self._generate_image()
             self.app.lookup.add(key)
 
         if resp:
