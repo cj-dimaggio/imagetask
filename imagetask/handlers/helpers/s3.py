@@ -2,10 +2,10 @@ import os
 
 from io import BytesIO
 
-from imagetask.config import ConfigDef
+from imagetask.config import ConfigDef, Configurable
 
 
-class S3IO(object):
+class S3IO(Configurable):
     config = ConfigDef({
         'KEY': ConfigDef.RequiredField,
         'SECRET': ConfigDef.RequiredField,

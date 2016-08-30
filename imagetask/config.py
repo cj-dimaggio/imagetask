@@ -40,14 +40,7 @@ class ConfigDef(object):
 
     def create_configured_instance(self, key, *args, **kwargs):
         clz, config = self.load_class(key)
-        instance = clz(*args, **kwargs)
-
-        if hasattr(instance, 'config') and isinstance(instance.config,
-                                                      ConfigDef):
-            instance.config = instance.config.copy()
-            instance.config.update(config)
-            instance.config.location.append(key.upper())
-            instance.config.validate()
+        instance = clz(*args, config=config, **kwargs)
 
         return instance
 
@@ -59,3 +52,15 @@ class ConfigDef(object):
 
     def __getitem__(self, key):
         return self.config[key]
+
+
+class Configurable(object):
+
+    config = ConfigDef()
+
+    def __init__(self, key='', config=None):
+        if config:
+            self.config = self.config.copy()
+            self.config.update(config)
+            self.config.location.append(key.upper())
+            self.config.validate()

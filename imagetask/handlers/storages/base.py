@@ -1,4 +1,7 @@
-class BaseStorage(object):
+from imagetask.config import Configurable
+
+
+class BaseStorage(Configurable):
 
     def exists(self, path):
         raise NotImplementedError

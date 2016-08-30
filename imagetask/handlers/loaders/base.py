@@ -1,3 +1,6 @@
-class BaseLoader(object):
+from imagetask.config import Configurable
+
+
+class BaseLoader(Configurable):
     def get(self, path, mode='rb'):
         raise NotImplementedError
