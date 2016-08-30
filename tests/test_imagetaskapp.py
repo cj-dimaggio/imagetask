@@ -30,7 +30,7 @@ def test_basic_app(basic_app):
 
 def test_deriv(basic_app):
     from imagetask.processors.lib import Crop
-    deriv = basic_app.derivative('test_image.png')
+    deriv = basic_app.new('test_image.png')
     deriv += Crop(width=50, height=200, x=20, y=10)
     img = Image.open(deriv.generate())
     assert img.width == 50
@@ -39,7 +39,7 @@ def test_deriv(basic_app):
 
 def test_serialization(basic_app):
     from imagetask.processors.lib import Crop
-    deriv = basic_app.derivative('test_image.png')
+    deriv = basic_app.new('test_image.png')
     deriv += Crop(width=50, height=200, x=20, y=10)
     data = deriv.url
     new_deriv = basic_app.from_serial_data(data)
@@ -47,10 +47,10 @@ def test_serialization(basic_app):
 
 
 def test_format(basic_app):
-    deriv = basic_app.derivative('test_image.png')
+    deriv = basic_app.new('test_image.png')
     assert Image.open(deriv.generate()).format == 'PNG'
 
-    deriv = basic_app.derivative('test_image.png', save_options={
+    deriv = basic_app.new('test_image.png', save_options={
         'format': 'JPEG',
         'quality':  20
     })
@@ -58,18 +58,18 @@ def test_format(basic_app):
 
 
 def test_alpha(basic_app):
-    deriv = basic_app.derivative('test_alpha.png', save_options={
+    deriv = basic_app.new('test_alpha.png', save_options={
         'format': 'JPEG',
     })
     assert Image.open(deriv.generate()).format == 'JPEG'
 
-    deriv = basic_app.derivative('test_alpha.png', save_options={
+    deriv = basic_app.new('test_alpha.png', save_options={
         'format': 'JPEG',
         'maintain_alpha': True
     })
     assert Image.open(deriv.generate()).format == 'PNG'
 
-    deriv = basic_app.derivative('test_image.png', save_options={
+    deriv = basic_app.new('test_image.png', save_options={
         'format': 'JPEG',
         'maintain_alpha': True
     })

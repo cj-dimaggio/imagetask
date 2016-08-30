@@ -31,7 +31,7 @@ def app():
 
 
 def test_filelookup(app):
-    deriv = app.derivative('test_image.png')
+    deriv = app.new('test_image.png')
     deriv.generate()
     assert app.lookup.exists(deriv.key)
     app.lookup.add('test', 'value')

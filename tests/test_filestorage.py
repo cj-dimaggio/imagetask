@@ -24,7 +24,7 @@ def app():
 
 
 def test_save(app):
-    deriv = app.derivative('test_image.png')
+    deriv = app.new('test_image.png')
     deriv.generate()
     assert os.path.exists('tests/working/%s' % deriv.url)
 
@@ -40,7 +40,7 @@ def test_lookup(app):
             return result
         return wrapped
 
-    deriv = app.derivative('test_image.png')
+    deriv = app.new('test_image.png')
     deriv.generate()
 
     app.storage.exists = wrapper(app.storage.exists)

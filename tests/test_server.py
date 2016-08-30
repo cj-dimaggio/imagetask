@@ -14,7 +14,7 @@ def test_server():
     register_imagetask(flask_app, copy.deepcopy(config))
 
     imagetask = ImageTaskApp(config)
-    deriv = imagetask.derivative('test_image.png')
+    deriv = imagetask.new('test_image.png')
     deriv += Crop(width=700, height=500, x=20, y=30)
     url = deriv.url
 
