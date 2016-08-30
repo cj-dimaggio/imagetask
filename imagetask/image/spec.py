@@ -84,8 +84,10 @@ class ImageSpec(object):
         return img.format
 
     def copy(self):
-        return ImageSpec(self.app, self.image_path, processors=self.processors,
-                         save_options=self.save_options)
+        # Support this class being extended
+        clz = self.__class__
+        return clz(self.app, self.image_path, processors=self.processors,
+                   save_options=self.save_options)
 
     def new_processor(self, processor):
         return self.append_processor_copy(processor)
@@ -164,7 +166,7 @@ class ImageSpec(object):
             return self.append_processor_copy(other)
 
     def __radd__(self, other):
-        if isinstance(other, basestring):
+        if isinstance(other, string_types):
             return other + self.url
         elif isinstance(other.__class__, ProcessorMeta):
             return self.prepend_processor_copy(other)
