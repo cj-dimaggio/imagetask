@@ -14,9 +14,10 @@ class S3IO(Configurable):
         'ACL': 'private'
     })
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self._bucket = None
         self._connection = None
+        super(S3IO, self).__init__(*args, **kwargs)
 
     def get_name(self, name):
         return os.path.join(self.config.PREFIX, name).encode('utf-8')

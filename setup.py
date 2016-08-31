@@ -5,7 +5,7 @@ packages.remove('tests')
 
 setup(
     name='ImageTask',
-    version='0.0.1',
+    version='0.0.2',
     author='Local Projects',
     description="An image processing service.",
     packages=packages,
