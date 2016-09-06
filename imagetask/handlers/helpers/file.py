@@ -5,7 +5,8 @@ from imagetask.config import ConfigDef, Configurable
 
 class FileIO(Configurable):
     config = ConfigDef(dict(
-        BASE_PATH=ConfigDef.RequiredField
+        BASE_PATH=ConfigDef.RequiredField,
+        MAX_FILENAME_LENGTH=255
     ))
 
     def exists(self, path):

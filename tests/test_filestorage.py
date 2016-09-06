@@ -1,3 +1,4 @@
+import shutil
 import pytest
 import os
 
@@ -5,7 +6,6 @@ from imagetask import ImageTaskApp
 
 @pytest.yield_fixture
 def app():
-    import glob
     config = {
         'SECRET_KEY': 'SECRET',
         'LOADER': {
@@ -17,16 +17,21 @@ def app():
             'BASE_PATH': 'tests/working'
         }
     }
+    try:
+        shutil.rmtree('tests/working/')
+    except FileNotFoundError:
+        pass
     yield ImageTaskApp(config)
-    files = glob.glob('tests/working/*')
-    for f in files:
-        os.remove(f)
+    try:
+        shutil.rmtree('tests/working/')
+    except FileNotFoundError:
+        pass
 
 
 def test_save(app):
     deriv = app.new('test_image.png')
     deriv.generate()
-    assert os.path.exists('tests/working/%s' % deriv.url)
+    assert os.path.exists('tests/working/%s' % app.storage.sanitize_key(deriv.key))
 
 
 def test_lookup(app):

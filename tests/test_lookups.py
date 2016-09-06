@@ -1,5 +1,7 @@
 import os
+import shutil
 import pytest
+
 
 from imagetask import ImageTaskApp
 
@@ -21,14 +23,15 @@ def app():
             'CACHE_DIR': 'tests/working'
         }
     }
-    files = glob.glob('tests/working/*')
-    for f in files:
-        os.remove(f)
+    try:
+        shutil.rmtree('tests/working/')
+    except FileNotFoundError:
+        pass
     yield ImageTaskApp(config)
-    files = glob.glob('tests/working/*')
-    for f in files:
-        os.remove(f)
-
+    try:
+        shutil.rmtree('tests/working/')
+    except FileNotFoundError:
+        pass
 
 def test_filelookup(app):
     deriv = app.new('test_image.png')

@@ -12,6 +12,9 @@ class BaseStorage(Configurable):
     def save(self, path, f):
         raise NotImplementedError
 
+    def sanitize_key(self, key):
+        return key
+
 
 class NoStorage(BaseStorage):
 

@@ -42,26 +42,27 @@ class ImageSpec(object):
         f = BytesIO()
         img.save(f, format=img.format, **save_options)
         f.seek(0)
-        self.app.storage.save(self.key, f)
+        self.app.storage.save(self.app.storage.sanitize_key(self.key), f)
         f.seek(0)
         return f
 
     def generate(self):
         key = self.key
+        storage_key = self.app.storage.sanitize_key(key)
 
         resp = None
 
         if self.app.lookup.exists(key):
-            resp = self.app.storage.get(key)
+            resp = self.app.storage.get(storage_key)
             if not resp:
                 # The cache gave a bad response, so unset the key
                 self.app.lookup.delete(key)
 
         if not resp:
-            if self.app.storage.exists(key):
+            if self.app.storage.exists(storage_key):
                 # We had a cache miss (for some reason) and will want
                 # to add it later
-                resp = self.app.storage.get(key)
+                resp = self.app.storage.get(storage_key)
             else:
                 resp = self._generate_image()
             self.app.lookup.add(key)
