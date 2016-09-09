@@ -36,7 +36,11 @@ class WerkzeugWrapper(BaseLookup):
     cache = None
 
     def exists(self, key):
-        return self.cache.has(key)
+        # Has is an optional field
+        if hasattr(self.cache, 'has'):
+            return self.cache.has(key)
+        else:
+            return bool(self.cache.get(key))
 
     def add(self, key, value=True):
         self.cache.set(key, value)

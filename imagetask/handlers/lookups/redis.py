@@ -14,9 +14,9 @@ class RedisLookup(WerkzeugWrapper):
     ))
 
     def __init__(self, *args, **kwargs):
-        super(FileLookup, self).__init__(*args, **kwargs)
+        super(RedisLookup, self).__init__(*args, **kwargs)
         self.cache = RedisCache(host=self.config['HOST'],
                                 port=self.config['PORT'],
                                 password=self.config['PASSWORD'],
-                                DB=self.config['DB'],
+                                db=self.config['DB'],
                                 key_prefix=self.config['KEY_PREFIX'])
