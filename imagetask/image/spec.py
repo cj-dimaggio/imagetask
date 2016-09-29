@@ -25,7 +25,7 @@ class ImageSpec(object):
             self.save_options
         ))
 
-    def _generate_image(self):
+    def _perform_img_processors(self):
         img = Image.open(self.app.loader.get(self.image_path))
 
         # Processors will probably convert image to raw rgb
@@ -35,6 +35,10 @@ class ImageSpec(object):
             img = proc.process(img)
 
         img.format = img_format
+        return img
+
+    def _generate_image(self):
+        img = self._perform_img_processors()
 
         save_options = self.save_options.copy()
         save_options.pop('format', None)
