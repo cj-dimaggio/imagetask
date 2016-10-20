@@ -10,7 +10,7 @@ class RedisLookup(WerkzeugWrapper):
         PORT=6379,
         PASSWORD=None,
         DB=0,
-        KEY_PREFIX=None
+        KEY_PREFIX='imagetask:'
     ))
 
     def __init__(self, *args, **kwargs):
