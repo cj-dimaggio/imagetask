@@ -21,7 +21,7 @@ setup(
         'Pillow>=3.0.0',
         'PyYAML>=3.11',
         'requests>=2.5.1',
-        'Werkzeug>=0.10.4',
+        'Werkzeug>=0.11.11',
     ],
     test_requires=[
         'pytest==2.9.2',
