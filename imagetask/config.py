@@ -50,6 +50,9 @@ class ConfigDef(object):
             resp += '%s: ' % loc
         return resp
 
+    def get(self, key, default=None):
+        return self.config.get(key, default)
+
     def __getitem__(self, key):
         return self.config[key]
 

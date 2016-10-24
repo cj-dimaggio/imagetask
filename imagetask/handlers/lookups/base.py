@@ -43,7 +43,9 @@ class WerkzeugWrapper(BaseLookup):
             return bool(self.cache.get(key))
 
     def add(self, key, value=True):
-        self.cache.set(key, value)
+        # Default timeout doesn't work for previous versions of werkzeug
+        timeout = self.config.get('TIMEOUT', 0)
+        self.cache.set(key, value, timeout=timeout)
 
     def get(self, key):
         return self.cache.get(key)

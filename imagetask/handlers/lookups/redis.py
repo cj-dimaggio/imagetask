@@ -10,7 +10,8 @@ class RedisLookup(WerkzeugWrapper):
         PORT=6379,
         PASSWORD=None,
         DB=0,
-        KEY_PREFIX='imagetask:'
+        KEY_PREFIX='imagetask:',
+        TIMEOUT=0
     ))
 
     def __init__(self, *args, **kwargs):
@@ -19,4 +20,5 @@ class RedisLookup(WerkzeugWrapper):
                                 port=self.config['PORT'],
                                 password=self.config['PASSWORD'],
                                 db=self.config['DB'],
-                                key_prefix=self.config['KEY_PREFIX'])
+                                key_prefix=self.config['KEY_PREFIX'],
+                                default_timeout=self.config['TIMEOUT'])

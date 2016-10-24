@@ -9,7 +9,8 @@ class FileLookup(WerkzeugWrapper):
     config = ConfigDef(dict(
         CACHE_DIR=ConfigDef.RequiredField,
         THRESHOLD=1000,
-        MODE=384
+        MODE=384,
+        TIMEOUT=0
     ))
 
     def __init__(self, *args, **kwargs):
@@ -17,9 +18,4 @@ class FileLookup(WerkzeugWrapper):
         self.cache = FileSystemCache(cache_dir=self.config['CACHE_DIR'],
                                      threshold=self.config['THRESHOLD'],
                                      mode=self.config['MODE'],
-                                     default_timeout=0)
-
-    def add(self, key, value=True):
-        # Default timeout doesn't work for previous versions of werkzeug
-        timeout = 0
-        self.cache.set(key, value, timeout=timeout)
+                                     default_timeout=self.config['TIMEOUT'])
