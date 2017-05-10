@@ -5,7 +5,7 @@ itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
 pilkit==1.1.13
-Pillow==3.3.0
+Pillow==4.1.1
 py==1.4.31
 PyYAML==3.11
 requests==2.10.0
