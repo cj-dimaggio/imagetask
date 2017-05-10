@@ -1,4 +1,3 @@
-import os
 import shutil
 import pytest
 
@@ -8,7 +7,6 @@ from imagetask import ImageTaskApp
 
 @pytest.yield_fixture
 def app():
-    import glob
     config = {
         'SECRET_KEY': 'SECRET',
         'LOADER': {

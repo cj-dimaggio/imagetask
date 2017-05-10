@@ -74,3 +74,12 @@ def test_alpha(basic_app):
         'maintain_alpha': True
     })
     assert Image.open(deriv.generate()).format == 'JPEG'
+
+
+def test_alpha_format_define(basic_app):
+    deriv = basic_app.new('test_alpha.tif', save_options={
+        'format': 'JPEG',
+        'maintain_alpha': 'PNG'
+    })
+    img = Image.open(deriv.generate())
+    assert Image.open(deriv.generate()).format == 'PNG'

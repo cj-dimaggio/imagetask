@@ -41,8 +41,12 @@ class ImageSpec(object):
         img = self._perform_img_processors()
 
         save_options = self.save_options.copy()
+
+        # These are taken into account by "determine_save_format" and we don't want them interfering
+        # (we also don't want to remove them in *that* function or else we lose idempotency)
         save_options.pop('format', None)
         save_options.pop('maintain_alpha', None)
+
         f = BytesIO()
         img.save(f, format=img.format, **save_options)
         f.seek(0)
@@ -77,15 +81,23 @@ class ImageSpec(object):
         return resp
 
     def determine_save_format(self, img):
-        if self.save_options.get('format'):
-            if self.save_options.get('maintain_alpha',
-                                     False) and img.mode in ['RGBA', 'L']:
+        format = self.save_options.get('format')
+        maintain_alpha = self.save_options.get('maintain_alpha', False)
+        if format:
+            if maintain_alpha and img.mode in ['RGBA', 'L']:
                 alpha = img.split()[-1]
                 all_pixel = alpha.width * alpha.height
                 if alpha.histogram()[255] != all_pixel:
-                    return img.format
+                    if isinstance(maintain_alpha, string_types):
+                        # Just because an image has an alpha channel doesn't necessarily mean they'll want to save it
+                        # in it's native format (TIFF, for instance). So this gives us the ability to determine what
+                        # kind of file type to use for output images (PNGs, for example)
+                        return maintain_alpha
+                    else:
+                        # Otherwise, we'll just have to default to what the image already is
+                        return img.format
             else:
-                return self.save_options.get('format')
+                return format
         return img.format
 
     def copy(self):
