@@ -96,8 +96,8 @@ class ImageSpec(object):
                     else:
                         # Otherwise, we'll just have to default to what the image already is
                         return img.format
-            else:
-                return format
+            return format
+
         return img.format
 
     def copy(self):
