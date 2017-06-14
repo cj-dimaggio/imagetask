@@ -1,5 +1,5 @@
 # imagetask
-A library for generating complex image derivatives efficiantly by serializing commands through Base64 encoded signed urls. Imagetask aims to be as extensible as possible, allowing for pluggable image loading strategies, storage providers and caching systems. 
+A library for generating complex image derivatives efficiantly by serializing commands through Base64 encoded signed urls. Imagetask aims to be as extensible as possible, allowing for pluggable image loading strategies, storage providers and caching systems. Written as, what I think is, a more web performant and more generalized alternative to [django-imagekit](https://github.com/matthewwithanm/django-imagekit) (although if you do like imagekit but just want it for Flask you can also try out [flask-imagekit](https://github.com/Ssawa/flask-imagekit))
 
 ## Example
 
