@@ -30,11 +30,11 @@ class ImageSpec(object):
 
         # Processors will probably convert image to raw rgb
         img_format = self.determine_save_format(img)
-
         for proc in self.processors:
             img = proc.process(img)
 
         img.format = img_format
+        img.mode = self.recommended_mode(img)
         return img
 
     def _generate_image(self):
@@ -99,6 +99,20 @@ class ImageSpec(object):
             return format
 
         return img.format
+
+    @staticmethod
+    def recommended_mode(img):
+        # Pillow recently changed some of it's mode validation that broke some JPEG
+        # conversion processes. So this is stand in for solving that problem and future
+        # problems.
+
+        # For now we're only going to be handling those cases where the derivative
+        # process converts us to the generic Image object (such as JPEG)
+        if img.__class__ == Image.Image:
+            if img.format.lower() == 'jpeg':
+                return 'RGB'
+
+        return img.mode
 
     def copy(self):
         # Support this class being extended

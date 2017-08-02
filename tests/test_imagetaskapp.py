@@ -83,3 +83,27 @@ def test_alpha_format_define(basic_app):
     })
     img = Image.open(deriv.generate())
     assert Image.open(deriv.generate()).format == 'PNG'
+
+
+def test_jpeg_alpha_mode(basic_app):
+    deriv = basic_app.new('test.jpeg', save_options={})
+    img = Image.open(deriv.resize(width=5).generate())
+    assert img.format == 'JPEG'
+    assert img.mode == 'RGB'
+    assert img.size[0] == 5
+
+
+def test_jpeg_to_png(basic_app):
+    deriv = basic_app.new('test.jpeg', save_options={'format': 'PNG'})
+    img = Image.open(deriv.resize(width=5).generate())
+    assert img.format == 'PNG'
+    assert img.mode == 'RGBA'
+    assert img.size[0] == 5
+
+
+def test_alpha_png_to_jpeg(basic_app):
+    deriv = basic_app.new('test_alpha.png', save_options={'format': 'JPEG'})
+    img = Image.open(deriv.resize(width=5).generate())
+    assert img.format == 'JPEG'
+    assert img.mode == 'RGB'
+    assert img.size[0] == 5

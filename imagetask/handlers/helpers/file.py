@@ -13,7 +13,10 @@ class FileIO(Configurable):
         return os.path.exists(self.full_path(path))
 
     def get(self, path, mode='rb'):
-        return open(self.full_path(path), mode)
+        try:
+            return open(self.full_path(path), mode)
+        except FileNotFoundError:
+            return None
 
     def full_path(self, path):
         return os.path.join(self.config.BASE_PATH, path)
